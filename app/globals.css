@@ -1,0 +1,88 @@
+@font-face {
+  font-family: 'Marrow';
+  src: url('/fonts/Ribeye_Marrow/RibeyeMarrow-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Kranky';
+  src: url('/fonts/Kranky/Kranky-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Caveat';
+  src: url('/fonts/Caveat_Brush/CaveatBrush-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Patrick';
+  src: url('/fonts/Patrick_Hand/PatrickHand-Regular.ttf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-marrow: 'Marrow', sans-serif;
+  --font-kranky: 'Kranky', sans-serif;
+  --font-caveat: 'Caveat', sans-serif;
+  --font-patrick: 'Patrick', sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Card swap animations */
+@keyframes card-to-front {
+  from {
+    transform: translateX(-60px) rotate(-4deg) scale(0.92);
+    z-index: 0;
+  }
+  to {
+    transform: translateX(0px) rotate(0deg) scale(1);
+    z-index: 10;
+  }
+}
+
+@keyframes card-to-back {
+  from {
+    transform: translateX(0px) rotate(0deg) scale(1);
+    z-index: 10;
+  }
+  to {
+    transform: translateX(-60px) rotate(-4deg) scale(0.92);
+    z-index: 0;
+  }
+}
+
+.card-front {
+  animation: card-to-front 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.card-back {
+  animation: card-to-back 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
