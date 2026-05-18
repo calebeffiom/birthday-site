@@ -2,20 +2,20 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://happpy-birthday.vercel.app/'),
+  metadataBase: new URL('https://happpy-birthday-babe-nu.vercel.app/'),
     title: "Happy Birthday 🎂",
     description: "A special birthday celebration for a very special person 😘",
   openGraph: {
     title: "Happy Birthday 🎂",
     description: "A special birthday celebration for a very special person 😘",
-    url: 'https://happpy-birthday.app/',
+    url: 'https://happpy-birthday-babe-nu.vercel.app/',
     siteName: "Ink Labs",
     images: [
       {
         url: "images/preview.png", // place preview.png inside /public
         width: 1200,
         height: 630,
-        alt: "Preview of AI-generated room setup",
+        alt: "preview image",
       },
     ],
     locale: "en_US",
