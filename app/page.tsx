@@ -146,7 +146,7 @@ export default function Home() {
 
       {/* Loading Overlay */}
       {loading && (
-        <div className="absolute inset-0 z-50 bg-[#f3d4ce] flex flex-col items-center justify-center">
+        <div className="absolute inset-0 z-50 bg-[#f3d4ce] flex flex-col items-center w-[100vw] h-[100vh] justify-center">
           <div className="flex flex-col items-center gap-6 max-w-[90%] text-center">
             <div className="w-[200px] h-[200px] md:w-[250px] md:h-[250px] rounded-2xl overflow-hidden shadow-2xl bg-white/40 backdrop-blur-sm p-4 flex items-center justify-center">
               <img 

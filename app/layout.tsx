@@ -2,17 +2,17 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://happpy-birthday-babe-nu.vercel.app/'),
-    title: "Happy Birthday 🎂",
-    description: "A special birthday celebration for a very special person 😘",
+  metadataBase: new URL('https://happy-birthday-babe-nu.vercel.app/'),
+  title: "Happy Birthday 🎂",
+  description: "A special birthday celebration for a very special person 😘",
   openGraph: {
     title: "Happy Birthday 🎂",
     description: "A special birthday celebration for a very special person 😘",
-    url: 'https://happpy-birthday-babe-nu.vercel.app/',
+    url: 'https://happy-birthday-babe-nu.vercel.app/',
     siteName: "Happy Birthday 🎂",
     images: [
       {
-        url: "https://happpy-birthday-babe-nu.vercel.app/images/preview.png", // place preview.png inside /public
+        url: "/images/preview.png",
         width: 1200,
         height: 630,
         alt: "preview image",
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   twitter: {
     title: "Happy Birthday Jess 🎂",
     description: "A special birthday celebration for a very special person 😘",
-    images: ["https://happpy-birthday-babe-nu.vercel.app/images/preview.png"], // same image as above
+    images: ["/images/preview.png"],
   },
   generator: "v0.app",
 }
