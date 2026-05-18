@@ -2,9 +2,32 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Happy Birthday Jess 🎂",
-  description: "A special birthday celebration",
-};
+  metadataBase: new URL('https://happpy-birthday.vercel.app/'),
+    title: "Happy Birthday 🎂",
+    description: "A special birthday celebration for a very special person 😘",
+  openGraph: {
+    title: "Happy Birthday 🎂",
+    description: "A special birthday celebration for a very special person 😘",
+    url: 'https://happpy-birthday.app/',
+    siteName: "Ink Labs",
+    images: [
+      {
+        url: "images/preview.png", // place preview.png inside /public
+        width: 1200,
+        height: 630,
+        alt: "Preview of AI-generated room setup",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    title: "Happy Birthday Jess 🎂",
+    description: "A special birthday celebration for a very special person 😘",
+    images: ["/images/preview.png"], // same image as above
+  },
+  generator: "v0.app",
+}
 
 export default function RootLayout({
   children,

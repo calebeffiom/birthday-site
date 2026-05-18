@@ -1,12 +1,145 @@
 'use client';
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+
+interface ConfettiParticle {
+  id: number;
+  startX: number;
+  startY: number;
+  color: string;
+  size: number;
+  angle: number;
+  distance: number;
+  delay: number;
+  shape: 'circle' | 'square' | 'triangle' | 'star';
+}
+
+function ConfettiFireworks() {
+  const [particles, setParticles] = useState<ConfettiParticle[]>([]);
+
+  useEffect(() => {
+    const colors = [
+      '#FFC0CB', '#FF69B4', '#FF1493', '#FFD700', 
+      '#FF8C00', '#FF4500', '#ADFF2F', '#00FF00', 
+      '#00FFFF', '#1E90FF', '#9370DB', '#8A2BE2',
+      '#F4A261', '#E76F51', '#2A9D8F', '#E9C46A'
+    ];
+    const shapes: ('circle' | 'square' | 'triangle' | 'star')[] = ['circle', 'square', 'triangle', 'star'];
+    const bursts = [
+      { startX: 50, startY: 45, baseDelay: 0.1 },  // Middle burst (first)
+      { startX: 25, startY: 55, baseDelay: 0.75 }, // Left burst (second)
+      { startX: 75, startY: 55, baseDelay: 1.4 }   // Right burst (third)
+    ];
+    
+    const count = 180; // Dense and rich explosion of particles
+    const list: ConfettiParticle[] = [];
+    let idCounter = 0;
+    
+    bursts.forEach((burst) => {
+      for (let i = 0; i < count / bursts.length; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const distance = 80 + Math.random() * 240; // Explosive distance range
+        const size = 6 + Math.random() * 11;
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        const delay = burst.baseDelay + Math.random() * 0.2;
+        const shape = shapes[Math.floor(Math.random() * shapes.length)];
+        
+        list.push({
+          id: idCounter++,
+          startX: burst.startX,
+          startY: burst.startY,
+          color,
+          size,
+          angle,
+          distance,
+          delay,
+          shape
+        });
+      }
+    });
+    
+    setParticles(list);
+  }, []);
+
+  return (
+    <div className="absolute inset-0 pointer-events-none z-45 overflow-hidden w-[100vw] h-[100vh]">
+      {particles.map((p) => {
+        const targetX = Math.cos(p.angle) * p.distance;
+        const targetY = Math.sin(p.angle) * p.distance + 160; // Drift down over time (simulated gravity)
+        
+        const getClipPath = () => {
+          if (p.shape === 'triangle') return 'polygon(50% 0%, 0% 100%, 100% 100%)';
+          if (p.shape === 'star') return 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)';
+          return undefined;
+        };
+
+        return (
+          <motion.div
+            key={p.id}
+            initial={{ 
+              x: `${p.startX}vw`, 
+              y: `${p.startY}vh`, 
+              scale: 0, 
+              opacity: 1,
+              rotate: 0 
+            }}
+            animate={{
+              x: `calc(${p.startX}vw + ${targetX}px)`,
+              y: `calc(${p.startY}vh + ${targetY}px)`,
+              scale: [0, 1.4, 1.1, 0.5, 0],
+              opacity: [1, 1, 0.8, 0],
+              rotate: Math.random() * 1080,
+            }}
+            transition={{
+              duration: 2.2,
+              ease: [0.1, 0.8, 0.3, 1], // Explosive cubic-bezier easing
+              delay: p.delay,
+            }}
+            className="absolute"
+            style={{
+              width: p.size,
+              height: p.size,
+              backgroundColor: p.color,
+              borderRadius: p.shape === 'circle' ? '50%' : p.shape === 'square' ? '2px' : undefined,
+              clipPath: getClipPath(),
+            }}
+          />
+        );
+      })}
+    </div>
+  );
+}
 
 export default function Home() {
   // false = card1 (cover) on top; true = card2 (message) on top
   const [flipped, setFlipped] = useState(false);
   const [animating, setAnimating] = useState(false);
   const [modal, setModal] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const triggerConfetti = () => {
+    setLoading(true);
+    // Sequence the loading screen first, then clear it and burst confetti
+    setTimeout(() => {
+      setLoading(false);
+      setShowConfetti(true);
+      setTimeout(() => setShowConfetti(false), 5000);
+    }, 2800);
+  };
+  useEffect(() => {
+    if (!modal) {
+      setTimeout(() => {
+        setLoading(true);
+        setTimeout(() => {
+          setLoading(false);
+          setShowConfetti(true);
+          setTimeout(() => setShowConfetti(false), 5000);
+        }, 2800);
+      }, 1000);
+    }
+  }, []);
 
   const flip = (toFlipped: boolean) => {
     if (animating || toFlipped === flipped) return;
@@ -21,23 +154,53 @@ export default function Home() {
   return (
     <section className='flex flex-col items-center justify-between bg-[#FCD5CE] h-[100vh] w-[100vw] gap-5 overflow-hidden px-[20px] md:px-[0px]'>
 
+      {/* Confetti Fireworks Burst */}
+      {showConfetti && <ConfettiFireworks />}
+
+      {/* Loading Overlay */}
+      {loading && (
+        <div className="absolute inset-0 z-50 bg-[#f3d4ce] flex flex-col items-center justify-center">
+          <div className="flex flex-col items-center gap-6 max-w-[90%] text-center">
+            <div className="w-[200px] h-[200px] md:w-[250px] md:h-[250px] rounded-2xl overflow-hidden shadow-2xl bg-white/40 backdrop-blur-sm p-4 flex items-center justify-center">
+              <img 
+                src="/images/loader.gif" 
+                alt="Loading celebration..."
+                className="w-full h-full object-contain rounded-xl"
+              />
+            </div>
+            <div className="space-y-2">
+              <h2 className="text-[#5E7E96] text-3xl md:text-4xl font-kranky animate-pulse">Making a wish... 🎂</h2>
+              <p className="text-[#767287] text-lg font-patrick">Preparing your special surprise ❤️</p>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* modal */}
      {
       modal && (
         <div className="absolute inset-0 z-50 bg-[black]/20 backdrop-blur-[10px] flex flex-col items-center justify-center">
-        <div className="relative flex flex-col justify-between items-center bg-[#7e7ba2] w-[50%] h-[50%] rounded-lg p-15">
+        <div className="relative flex flex-col md:gap-4 justify-between items-center bg-[#7e7ba2] lg:w-[40%] md:w-[50%] md:w-[80%]  w-[90%] md:h-[50%] h-[80%] rounded-lg p-15">
           
-          <div className='absolute w-[50px] h-[50px] bg-red-400 top-[-1px] right-[-1px] rounded-lg cursor-pointer flex items-center justify-center' onClick={()=>setModal(false)}><X size={30} color="white" /></div>
+          <div 
+            className='absolute w-[50px] h-[50px] bg-red-400 top-[-1px] right-[-1px] rounded-lg cursor-pointer flex items-center justify-center' 
+            onClick={triggerConfetti}
+          >
+            <X size={30} color="white" />
+          </div>
 
 
           <div>
-            <h2 className='text-[white] text-3xl font-patrick'>Blow Out The Candles..! 👀</h2>
+            <h2 className='text-[white] md:text-3xl text-xl font-patrick'>Blow Out The Candles..! 👀</h2>
           </div>
-          <div className='w-[300px] h-[300px] bg-[#BFEFE1] flex flex-col items-center justify-center'>
+          <div className='md:w-[300px] md:h-[300px] w-[250px] h-[250px] bg-[#BFEFE1] flex flex-col items-center justify-center'>
             <p className='text-black'>Picture here</p>
           </div>
           <div className='flex justify-center w-full'>
-            <button className="text-[white] font-patrick text-[20px] px-5 py-2 bg-[#75c2f4] w-fit rounded-[15px] shadow-[0px_4px_0px_-1px_rgba(177,158,173,0.8)] cursor-pointer">
+            <button 
+              onClick={triggerConfetti}
+              className="text-[white] font-patrick text-[20px] px-5 py-2 bg-[#75c2f4] w-fit rounded-[15px] shadow-[0px_4px_0px_-1px_rgba(177,158,173,0.8)] cursor-pointer"
+            >
               Allow Access to Mic
             </button>
           </div>
@@ -64,17 +227,17 @@ export default function Home() {
               : 'translateX(-60px) rotate(-4deg) scale(0.92)',
             transition: 'transform 0.45s cubic-bezier(0.34, 1.2, 0.64, 1)',
           }}
-          className='absolute lg:w-[40%] md:w-[60%] w-full lg:h-[80%] md:h-[70%] h-full flex flex-col justify-center lg:p-15 md:p-10 p-5 bg-[#BFEFE1] shadow-2xl'
+          className='absolute lg:w-[750px] md:w-[60%] w-full lg:h-[750px] md:h-[70%] h-full flex flex-col justify-center lg:p-15 md:p-10 p-5 bg-[#BFEFE1] shadow-2xl'
         >
-          <div className='w-full h-full flex flex-col gap-[50px] items-center text-center overflow-y-hidden'>
+          <div className='w-full h-full flex flex-col gap-4 md:gap-6 lg:gap-10 items-center text-center justify-center overflow-y-hidden'>
             <div>
               <h2 className='text-[#5E7E96] lg:text-[60px] md:text-[40px] text-[35px] font-kranky'>To my favourite</h2>
               <h2 className='text-[#5E7E96] lg:text-[60px] md:text-[40px] text-[35px] font-kranky'>person in the</h2>
               <h2 className='text-[#5E7E96] lg:text-[60px] md:text-[40px] text-[35px] font-kranky'>whole world 💕</h2>
             </div>
             <div>
-              <div className='lg:w-[300px] lg:h-[300px] md:w-[250px] md:h-[250px] w-[300px] h-[300px] bg-[white] flex flex-col items-center justify-center'>
-                <p className='text-black'>Picture here</p>
+              <div className='w-full max-w-[150px] sm:max-w-[200px] md:max-w-[250px] lg:max-w-[300px] aspect-square flex flex-col items-center justify-center mx-auto'>
+                <img src="/images/globe.png" className="w-full h-full object-contain" alt="Globe" />
               </div>
             </div>
           </div>
@@ -91,12 +254,16 @@ export default function Home() {
               : 'translateX(0px) rotate(0deg) scale(1)',
             transition: 'transform 0.45s cubic-bezier(0.34, 1.2, 0.64, 1)',
           }}
-          className='absolute lg:w-[40%] md:w-[60%] w-full lg:h-[80%] md:h-[70%] h-full flex flex-col justify-center bg-[#ffff]/85 lg:p-15 md:p-10 p-5 shadow-2xl'
+          className='absolute lg:w-[750px]  md:w-[60%] w-full lg:h-[750px] md:h-[70%] h-full flex flex-col justify-center bg-[#ffff]/85 lg:p-15 md:p-10 p-5 shadow-2xl'
         >
           <div className='w-full h-full overflow-y-scroll flex flex-col gap-[50px] items-center'>
             <div>
-              <div className='lg:w-[300px] lg:h-[300px] md:w-[250px] md:h-[250px] w-[200px] h-[200px] bg-[#BFEFE1] flex flex-col items-center justify-center'>
-                <p className='text-black'>Picture here</p>
+              <div className='w-full max-w-[150px] sm:max-w-[200px] md:max-w-[250px] lg:max-w-[300px] aspect-square flex flex-col items-center justify-center mx-auto overflow-hidden rounded-lg'>
+                <img 
+                  src="/images/celebration.gif" 
+                  className="w-full h-full object-contain" 
+                  alt="Cute birthday celebration animation" 
+                />
               </div>
             </div>
             <div>

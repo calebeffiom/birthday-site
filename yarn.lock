@@ -437,6 +437,31 @@ enhanced-resolve@^5.21.0:
     graceful-fs "^4.2.4"
     tapable "^2.3.3"
 
+framer-motion@12.34.3:
+  version "12.34.3"
+  resolved "https://registry.yarnpkg.com/framer-motion/-/framer-motion-12.34.3.tgz#946f716bfef710d564bf721f4f364274f6278fd4"
+  integrity sha512-v81ecyZKYO/DfpTwHivqkxSUBzvceOpoI+wLfgCgoUIKxlFKEXdg0oR9imxwXumT4SFy8vRk9xzJ5l3/Du/55Q==
+  dependencies:
+    motion-dom "^12.34.3"
+    motion-utils "^12.29.2"
+    tslib "^2.4.0"
+
+framer-motion@^12.39.0:
+  version "12.39.0"
+  resolved "https://registry.yarnpkg.com/framer-motion/-/framer-motion-12.39.0.tgz#905f120cae5c769d7a8a83c9e25e079ba2617e35"
+  integrity sha512-+vnLfzrv0MzjLzNl+nvNvR7jdg3q4cxxjz/YvzfifHl0TREtL00cs1RoMTxs+1PzLiEqZGV6gYsBY0oEAYZ24w==
+  dependencies:
+    motion-dom "^12.39.0"
+    motion-utils "^12.39.0"
+    tslib "^2.4.0"
+
+framer@^3.0.4:
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/framer/-/framer-3.0.4.tgz#9b199a6b38c30e91d67adfbcfb9a19b7fe3c7e6d"
+  integrity sha512-O6RyM77iGBg3p2NuUbSHvPnuS5TZ1zJHzSC2GO4RelICT5sgUfXWfDWqpvULTETTCCxbg7vv8EuZp9bHRkr96w==
+  dependencies:
+    framer-motion "12.34.3"
+
 graceful-fs@^4.2.4:
   version "4.2.11"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.11.tgz#4183e4e8bf08bb6e05bbb2f7d2e0c8f712ca40e3"
@@ -532,6 +557,26 @@ magic-string@^0.30.21:
   integrity sha512-vd2F4YUyEXKGcLHoq+TEyCjxueSeHnFxyyjNp80yg0XV4vUhnDer/lvvlqM/arB5bXQN5K2/3oinyCRyx8T2CQ==
   dependencies:
     "@jridgewell/sourcemap-codec" "^1.5.5"
+
+motion-dom@^12.34.3, motion-dom@^12.39.0:
+  version "12.39.0"
+  resolved "https://registry.yarnpkg.com/motion-dom/-/motion-dom-12.39.0.tgz#2a663bc8f572890d529e393114f4cf11824b0d0b"
+  integrity sha512-Xn7aAcGDhco/JZTXOub64UmaYn73C6J1Po7Fk+8EvkJsNGTqfhon6UJY53vJKXW5v5Zl8HrYsVxv6oPXeGoGLQ==
+  dependencies:
+    motion-utils "^12.39.0"
+
+motion-utils@^12.29.2, motion-utils@^12.39.0:
+  version "12.39.0"
+  resolved "https://registry.yarnpkg.com/motion-utils/-/motion-utils-12.39.0.tgz#e1c66f0e912999804bc5e69b4630c3bc794ef29f"
+  integrity sha512-8nadJAJjTtqRkmRF36FoJTrywK9nnFmnPwnSMyxaOCU7GDjN9RTMJIxx9De8ErM+vpPhMccr/6fo5WciyQLnMQ==
+
+motion@^12.39.0:
+  version "12.39.0"
+  resolved "https://registry.yarnpkg.com/motion/-/motion-12.39.0.tgz#351b656daef576f8d9186e21bea37f299c3df7e8"
+  integrity sha512-H4a+Ze+a9j+/NTla5ezfb/g9vmIOxC+viDj++NGDZyTZkdRKjiOz3kSv6TalRWM8ZmD2y/CfC6TkQc97ybyqSA==
+  dependencies:
+    framer-motion "^12.39.0"
+    tslib "^2.4.0"
 
 nanoid@^3.3.11, nanoid@^3.3.6:
   version "3.3.12"
