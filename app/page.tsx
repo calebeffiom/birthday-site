@@ -115,30 +115,17 @@ export default function Home() {
   // false = card1 (cover) on top; true = card2 (message) on top
   const [flipped, setFlipped] = useState(false);
   const [animating, setAnimating] = useState(false);
-  const [modal, setModal] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  const triggerConfetti = () => {
-    setLoading(true);
-    // Sequence the loading screen first, then clear it and burst confetti
-    setTimeout(() => {
+  // Trigger initial loading screen, then show confetti
+  useEffect(() => {
+    const timer = setTimeout(() => {
       setLoading(false);
       setShowConfetti(true);
       setTimeout(() => setShowConfetti(false), 5000);
     }, 2800);
-  };
-  useEffect(() => {
-    if (!modal) {
-      setTimeout(() => {
-        setLoading(true);
-        setTimeout(() => {
-          setLoading(false);
-          setShowConfetti(true);
-          setTimeout(() => setShowConfetti(false), 5000);
-        }, 2800);
-      }, 1000);
-    }
+    return () => clearTimeout(timer);
   }, []);
 
   const flip = (toFlipped: boolean) => {
@@ -176,38 +163,7 @@ export default function Home() {
         </div>
       )}
 
-      {/* modal */}
-     {
-      modal && (
-        <div className="absolute inset-0 z-50 bg-[black]/20 backdrop-blur-[10px] flex flex-col items-center justify-center">
-        <div className="relative flex flex-col md:gap-4 justify-between items-center bg-[#7e7ba2] lg:w-[40%] md:w-[50%] md:w-[80%]  w-[90%] md:h-[50%] h-[80%] rounded-lg p-15">
-          
-          <div 
-            className='absolute w-[50px] h-[50px] bg-red-400 top-[-1px] right-[-1px] rounded-lg cursor-pointer flex items-center justify-center' 
-            onClick={triggerConfetti}
-          >
-            <X size={30} color="white" />
-          </div>
 
-
-          <div>
-            <h2 className='text-[white] md:text-3xl text-xl font-patrick'>Blow Out The Candles..! 👀</h2>
-          </div>
-          <div className='md:w-[300px] md:h-[300px] w-[250px] h-[250px] bg-[#BFEFE1] flex flex-col items-center justify-center'>
-            <p className='text-black'>Picture here</p>
-          </div>
-          <div className='flex justify-center w-full'>
-            <button 
-              onClick={triggerConfetti}
-              className="text-[white] font-patrick text-[20px] px-5 py-2 bg-[#75c2f4] w-fit rounded-[15px] shadow-[0px_4px_0px_-1px_rgba(177,158,173,0.8)] cursor-pointer"
-            >
-              Allow Access to Mic
-            </button>
-          </div>
-        </div>
-      </div>
-      )
-     }
 
 
 
