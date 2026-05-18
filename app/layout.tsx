@@ -9,10 +9,10 @@ export const metadata: Metadata = {
     title: "Happy Birthday 🎂",
     description: "A special birthday celebration for a very special person 😘",
     url: 'https://happpy-birthday-babe-nu.vercel.app/',
-    siteName: "Ink Labs",
+    siteName: "Happy Birthday 🎂",
     images: [
       {
-        url: "images/preview.png", // place preview.png inside /public
+        url: "https://happpy-birthday-babe-nu.vercel.app/images/preview.png", // place preview.png inside /public
         width: 1200,
         height: 630,
         alt: "preview image",
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   twitter: {
     title: "Happy Birthday Jess 🎂",
     description: "A special birthday celebration for a very special person 😘",
-    images: ["/images/preview.png"], // same image as above
+    images: ["https://happpy-birthday-babe-nu.vercel.app/images/preview.png"], // same image as above
   },
   generator: "v0.app",
 }
