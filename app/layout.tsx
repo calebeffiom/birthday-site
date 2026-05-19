@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     type: "website",
   },
   twitter: {
-    title: "Happy Birthday Jess 🎂",
+    title: "Happy Birthday 🎂",
     description: "A special birthday celebration for a very special person 😘",
     images: ["/images/preview.png"],
   },

@@ -78,15 +78,15 @@ function ConfettiFireworks() {
           <motion.div
             key={p.id}
             initial={{ 
-              x: `${p.startX}vw`, 
-              y: `${p.startY}vh`, 
+              x: 0, 
+              y: 0, 
               scale: 0, 
               opacity: 1,
               rotate: 0 
             }}
             animate={{
-              x: `calc(${p.startX}vw + ${targetX}px)`,
-              y: `calc(${p.startY}vh + ${targetY}px)`,
+              x: targetX,
+              y: targetY,
               scale: [0, 1.4, 1.1, 0.5, 0],
               opacity: [1, 1, 0.8, 0],
               rotate: Math.random() * 1080,
@@ -100,6 +100,8 @@ function ConfettiFireworks() {
             style={{
               width: p.size,
               height: p.size,
+              left: `${p.startX}vw`,
+              top: `${p.startY}vh`,
               backgroundColor: p.color,
               borderRadius: p.shape === 'circle' ? '50%' : p.shape === 'square' ? '2px' : undefined,
               clipPath: getClipPath(),
@@ -146,7 +148,7 @@ export default function Home() {
 
       {/* Loading Overlay */}
       {loading && (
-        <div className="absolute inset-0 z-50 bg-[#f3d4ce] flex flex-col items-center w-[100vw] h-[100vh] justify-center">
+        <div className="fixed inset-0 z-50 bg-[#f3d4ce] flex flex-col items-center justify-center">
           <div className="flex flex-col items-center gap-6 max-w-[90%] text-center">
             <div className="w-[200px] h-[200px] md:w-[250px] md:h-[250px] rounded-2xl overflow-hidden shadow-2xl bg-white/40 backdrop-blur-sm p-4 flex items-center justify-center">
               <img 
