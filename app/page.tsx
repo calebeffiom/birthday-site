@@ -121,14 +121,47 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
 
   // Trigger initial loading screen, then show confetti
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     setLoading(false);
+  //     setShowConfetti(true);
+  //     setTimeout(() => setShowConfetti(false), 5000);
+  //   }, 2800);
+  //   return () => clearTimeout(timer);
+  // }, []);
+
+
   useEffect(() => {
-    const timer = setTimeout(() => {
+  let rafId: number;
+  let didFinish = false;
+
+  const finish = () => {
+    if (didFinish) return;
+    didFinish = true;
+    // Chain through rAF so the state update lands on a real paint cycle.
+    // This unblocks older iOS (6/7) where heavy animations can starve setTimeout.
+    rafId = requestAnimationFrame(() => {
       setLoading(false);
       setShowConfetti(true);
       setTimeout(() => setShowConfetti(false), 5000);
-    }, 2800);
-    return () => clearTimeout(timer);
-  }, []);
+    });
+  };
+
+  const timer = setTimeout(finish, 2800);
+
+  // Fallback: if the page was backgrounded and timers got throttled,
+  // dismiss the loader the moment the user comes back.
+  const onVisibility = () => {
+    if (document.visibilityState === 'visible') finish();
+  };
+  document.addEventListener('visibilitychange', onVisibility);
+
+  return () => {
+    clearTimeout(timer);
+    cancelAnimationFrame(rafId);
+    document.removeEventListener('visibilitychange', onVisibility);
+  };
+}, []);
 
   const flip = (toFlipped: boolean) => {
     if (animating || toFlipped === flipped) return;
